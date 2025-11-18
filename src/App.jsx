@@ -934,7 +934,7 @@ export default function App() {
     </div>
     <div style={{ fontSize: 13, color: TEXT }}>{r.description}</div>
   </div>
-)}
+)} 
               </div>
             ))}
           </div>
