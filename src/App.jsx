@@ -129,28 +129,66 @@ function roundToNearest(x, step = 25) {
   return Math.round(x / step) * step;
 }
 function getCPPriceForConfig(kw, config) {
-  if (!kw) return 0;
-  for (const r of CP_ROWS) {
-    if (kw >= r.min && kw <= r.max) {
-      if (config === "duplex") return r.duplex || 0;
-      if (config === "triplex") return r.triplex || 0;
-      if (config === "quad") return r.quad || 0;
-      return r.duplex || 0;
-    }
+  // 1) Determine base price row
+  let row = CP_ROWS.find(r => kw >= r.min && kw <= r.max);
+
+  // 2) Above 11 → use 15 kW prices
+  if (!row && kw > 11 && kw <= 15) {
+    row = CP_ROWS.find(r => r.min === 15);
   }
-  return 0;
+
+  // 3) Above 15 → ratio (kw / 15) * CP_price_15KW
+  if (!row && kw > 15) {
+    const r15 = CP_ROWS.find(r => r.min === 15);
+    const base =
+      config === "duplex" ? r15.duplex :
+      config === "triplex" ? r15.triplex :
+      r15.quad;
+
+    const ratioPrice = Math.round((kw / 15) * base);
+    return ratioPrice + 100; // +100 KD always
+  }
+
+  // Get base price
+  const base =
+    config === "duplex" ? row.duplex :
+    config === "triplex" ? row.triplex :
+    row.quad;
+
+  // Always +100 KD
+  return Math.round(base + 100);
 }
+
+
 function getVFDPriceForConfig(kw, config) {
-  if (!kw) return 0;
-  for (const r of VFD_ROWS) {
-    if (kw >= r.min && kw <= r.max) {
-      if (config === "duplex") return r.duplex || 0;
-      if (config === "triplex") return r.triplex || 0;
-      if (config === "quad") return r.quad || 0;
-      return r.duplex || 0;
-    }
+  // 1) Determine base price row
+  let row = VFD_ROWS.find(r => kw >= r.min && kw <= r.max);
+
+  // 2) Above 11 → use 15 kW prices
+  if (!row && kw > 11 && kw <= 15) {
+    row = VFD_ROWS.find(r => r.min === 15);
   }
-  return 0;
+
+  // 3) Above 15 → ratio (kw / 15) * VFD_price_15KW
+  if (!row && kw > 15) {
+    const r15 = VFD_ROWS.find(r => r.min === 15);
+    const base =
+      config === "duplex" ? r15.duplex :
+      config === "triplex" ? r15.triplex :
+      r15.quad;
+
+    const ratioPrice = Math.round((kw / 15) * base);
+    return ratioPrice + 100; // +100 KD always
+  }
+
+  // Get base price
+  const base =
+    config === "duplex" ? row.duplex :
+    config === "triplex" ? row.triplex :
+    row.quad;
+
+  // Always +100 KD
+  return Math.round(base + 100);
 }
 
 // defaults
