@@ -805,9 +805,9 @@ export default function App() {
               </div>
             )}
 
-            {results.map((r) => (
-      <>
-  {expandedIds.has(r.id) && (
+         {results.map((r) => (
+  <>
+    {expandedIds.has(r.id) && (
     <div
       style={{
         width: "100%",
@@ -978,7 +978,7 @@ export default function App() {
 
               
               </div>
-        <>
+  </>>
             ))}
           </div>
         </div>
