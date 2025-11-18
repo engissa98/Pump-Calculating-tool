@@ -806,7 +806,7 @@ export default function App() {
             )}
 
             {results.map((r) => (
-      </>
+      <>
   {expandedIds.has(r.id) && (
     <div
       style={{
@@ -978,7 +978,7 @@ export default function App() {
 
               
               </div>
-        </>
+        <>
             ))}
           </div>
         </div>
