@@ -26,6 +26,36 @@ const VFD_ROWS = [
   { min: 15, max: 15, duplex: 700, triplex: 900, quad: 1250 },
 ];
 
+
+// --- Updated electrical price computation ---
+function computeElectricalPrice(kw, config, isVfd) {
+  const rows = isVfd ? VFD_ROWS : CP_ROWS;
+  const nkw = Number(kw);
+  let basePrice = 0;
+  // find 15kW row
+  const row15 = rows.find(r => r.min === 15);
+  const getConfigPrice = (row) => {
+    if (config === "duplex") return row.duplex;
+    if (config === "triplex") return row.triplex;
+    if (config === "quad") return row.quad;
+    return row.duplex;
+  };
+  if (nkw > 15) {
+    basePrice = getConfigPrice(row15);
+    let scaled = (basePrice / 15) * nkw;
+    return Math.round(scaled) + 100;
+  }
+  if (nkw > 11) {
+    basePrice = getConfigPrice(row15);
+    return Math.round(basePrice) + 100;
+  }
+  // normal range
+  const row = rows.find(r => nkw >= r.min && nkw <= r.max);
+  if (row) {
+    return getConfigPrice(row);
+  }
+  return 0;
+}
 const HEADER_TABLE = {
   "1.5": {
     Duplex: { PPR: 100, SS304: 150, SS316: 200 },
