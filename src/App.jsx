@@ -806,6 +806,40 @@ export default function App() {
             )}
 
             {results.map((r) => (
+      <>
+  {expandedIds.has(r.id) && (
+    <div
+      style={{
+        width: "100%",
+        background: "#0b1624",
+        padding: 12,
+        borderRadius: 8,
+        border: "1px solid rgba(255,255,255,0.06)",
+        whiteSpace: "pre-wrap",
+        marginBottom: 10
+      }}
+    >
+      <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 6 }}>
+        <div style={{ fontWeight: 800 }}>Full Description</div>
+        <button
+          onClick={() => navigator.clipboard.writeText(r.description)}
+          style={{
+            padding: "4px 10px",
+            borderRadius: 6,
+            background: "#111827",
+            border: "1px solid rgba(255,255,255,0.06)",
+            color: "#cbd5e1",
+            fontSize: 12,
+            cursor: "pointer",
+          }}
+        >
+          Copy
+        </button>
+      </div>
+      <div style={{ fontSize: 13 }}>{r.description}</div>
+    </div>
+  )}
+
               <div
                 key={r.id}
                 style={{
@@ -942,40 +976,7 @@ export default function App() {
                   </div>
                 </div>
 
-                {expandedIds.has(r.id) && (
-  <div
-    style={{
-      marginTop: 8,
-      whiteSpace: "pre-wrap",
-      background: "#0b1624",
-      padding: 10,
-      borderRadius: 8,
-      border: "1px solid rgba(255,255,255,0.03)",
-      position: "relative",
-    }}
-  >
-    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }}>
-      <div style={{ fontWeight: 800 }}>Full Description</div>
-      <button
-        onClick={() => {
-          navigator.clipboard.writeText(r.description);
-        }}
-        style={{
-          padding: "4px 10px",
-          borderRadius: 6,
-          background: "#111827",
-          border: "1px solid rgba(255,255,255,0.06)",
-          color: "#cbd5e1",
-          fontSize: 12,
-          cursor: "pointer",
-        }}
-      >
-        Copy
-      </button>
-    </div>
-    <div style={{ fontSize: 13, color: TEXT }}>{r.description}</div>
-  </div>
-)} 
+              
               </div>
             ))}
           </div>
