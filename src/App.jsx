@@ -438,7 +438,10 @@ export default function App() {
   }, [totalPumpCost, totalValveCost, electricalApplied, pressureTank, baseStand, pressureSwitch, headerPrice, labor, accessories]);
 
   // FA multiplies margin by 1.2 (applied only to margin internally)
-  const effectiveMargin = useMemo(() => Number(margin || 1) * (factoryAssembled ? 1.2 : 1), [margin, factoryAssembled]);
+  const effectiveMargin = useMemo(() => {
+  const base = Number(margin || 1);
+  return factoryAssembled ? base + 0.2 : base;
+}, [margin, factoryAssembled]);
 
   const sellingBeforeRound = useMemo(() => subtotalWithoutMargin * effectiveMargin, [subtotalWithoutMargin, effectiveMargin]);
 
